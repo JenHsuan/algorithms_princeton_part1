@@ -38,3 +38,4 @@ java/build/**
 
 submit/
 bin/
+*.zip

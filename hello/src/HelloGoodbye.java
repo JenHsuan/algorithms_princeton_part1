@@ -1,5 +1,5 @@
 public class HelloGoodbye {
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     if (args.length != 2) {
       System.out.println("Please give two names"); 
       return;
