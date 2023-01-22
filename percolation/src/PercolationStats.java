@@ -1,67 +1,77 @@
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
-import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class PercolationStats {
-  // test client (see below)
-  public static void main(String[] args) {
-    PercolationStats percolationStats = new PercolationStats(50, 50);
-    System.out.println(String.format("mean: %1$s.", percolationStats.mean()));
-    System.out.println(String.format("stddev: %1$s.", percolationStats.stddev()));
-    System.out.println(String.format("confidenceHi: %1$s.", percolationStats.confidenceHi()));
-    System.out.println(String.format("confidenceLo: %1$s.", percolationStats.confidenceLo()));
-  }
-
-  private double trialResults[];
+  private static final double CONFIDENCE_95 = 1.96;
+  private double[] trialResults;
   private int trials = 0;
-  private double avg = 0;
 
-  // perform independent trials on an n-by-n grid
   public PercolationStats(int n, int trials) {
+    if (n < 0 || trials < 0) {
+      throw new java.lang.IllegalArgumentException("out of boundary");
+    }
+
     this.trials = trials;
     this.trialResults = new double[this.trials];
     for (int i = 0; i < this.trials; i++) {
       this.trialResults[i] = this.getTrialResult(n);
-      this.avg += this.trialResults[i];
     }
+  }
+
+  public static void main(String[] args) {
+    if (args.length != 2) {
+      System.out.println("Please give a number"); 
+      return;
+    }
+
+    int n = Integer.parseInt(args[0]); 
+    int trials = Integer.parseInt(args[1]);
+
+    if (n < 0 || trials < 0) {
+      throw new java.lang.IllegalArgumentException("out of boundary");
+    }
+
+    PercolationStats percolationStats = new PercolationStats(n, trials);
+    System.out.println(String.format("mean = %1$s", percolationStats.mean()));
+    System.out.println(String.format("stddev = %1$s", percolationStats.stddev()));
+    System.out.println(String.format("95%% confidence interval = [%1$s, %2$s]", percolationStats.confidenceLo(), percolationStats.confidenceHi()));
   }
 
   private double getTrialResult(int n) {
-    int length = n + 1;
+    if (n < 0) {
+      throw new java.lang.IllegalArgumentException("out of boundary");
+    }
+
+    int length = n;
     Percolation percolation = new Percolation(length);
     while (!percolation.percolates()) {
-      int index = StdRandom.uniformInt(1, length * length + 1);
-      int row = index / length + 1;
-      int col = index - (row - 1) * length + 1;  
+      int index = StdRandom.uniformInt(1, length * length);
+      int row = index / length +  1;
+      int col = index - (row - 1) * length; 
+      if (index % length == 0) {
+        row -= 1;
+        col = length;
+      }
+
       percolation.open(row, col);
     }
     double number = percolation.numberOfOpenSites();
-    return number/((length - 1) * (length - 1));
+    return number/(length * length);
   }
   
-  // sample mean of percolation threshold
   public double mean() {
-    return this.avg / this.trials;
+    return StdStats.mean(this.trialResults);
   }
 
-  // sample standard deviation of percolation threshold
   public double stddev() {
-    double res = 0;
-    for (int i = 0; i < this.trials; i++) {
-      res += Math.pow(this.trialResults[i] - this.mean(), 2);
-    }
-    return res / (this.trials - 1);
+    return Math.sqrt(StdStats.stddev(this.trialResults));
   }
 
-  // low endpoint of 95% confidence interval
   public double confidenceLo() {
-    return this.mean() - 1.96 * Math.sqrt(this.stddev()) / Math.sqrt(this.trials);
+    return this.mean() - CONFIDENCE_95 * this.stddev() / Math.sqrt(this.trials);
   }
 
-  // high endpoint of 95% confidence interval
   public double confidenceHi() {
-    return this.mean() + 1.96 * Math.sqrt(this.stddev()) / Math.sqrt(this.trials);
+    return this.mean() + CONFIDENCE_95 * this.stddev() / Math.sqrt(this.trials);
   }
-
- 
 }
