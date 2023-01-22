@@ -1,6 +1,6 @@
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-import edu.princeton.cs.algs4.StdIn;
+
 public class Percolation {
   private Status[] sites;
   private int length = 0;
@@ -10,7 +10,7 @@ public class Percolation {
 
   private enum Status
   {
-      OPEN, FULL, BLOCKED;
+      OPEN, BLOCKED;
   }
 
   public Percolation(int n) {
@@ -28,8 +28,6 @@ public class Percolation {
     }   
 
     this.weightedQuickUnionUF = new WeightedQuickUnionUF(this.length * this.length + 2);
-    this.sites[this.virtualBottomSiteId] = Status.FULL;
-    this.sites[this.virtualTopSiteId] = Status.FULL;
   }
 
   public static void main(String[] args) {
@@ -101,7 +99,7 @@ public class Percolation {
       throw new java.lang.IllegalArgumentException("out of boundary");
     }
     
-    return this.isSpecificState(row, col, Status.OPEN) || this.isSpecificState(row, col, Status.FULL);
+    return this.isSpecificState(row, col, Status.OPEN);
   }
 
   public boolean isFull(int row, int col) {
@@ -115,7 +113,7 @@ public class Percolation {
   public int numberOfOpenSites() {
     int cnt = 0;
     for (int i = 0; i < this.length * this.length; i++) {
-      if (this.sites[i] == Status.OPEN || this.sites[i] == Status.FULL) {
+      if (this.sites[i] == Status.OPEN) {
         cnt++;
       }
     }   
