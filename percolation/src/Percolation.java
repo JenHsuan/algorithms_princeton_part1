@@ -2,16 +2,11 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-  private Status[] sites;
+  private boolean[] doesSiteOpen;
   private int length = 0;
   private WeightedQuickUnionUF weightedQuickUnionUF;
   private int virtualTopSiteId = 0;
   private int virtualBottomSiteId = 0;
-
-  private enum Status
-  {
-      OPEN, BLOCKED;
-  }
 
   public Percolation(int n) {
     if (n <= 0) {
@@ -21,10 +16,10 @@ public class Percolation {
     this.length = n;
     this.virtualTopSiteId = this.length * this.length;
     this.virtualBottomSiteId = this.length * this.length + 1;
-    this.sites = new Status[this.length * this.length + 2];
+    this.doesSiteOpen = new boolean[this.length * this.length + 2];
 
     for (int i = 0; i < this.length * this.length + 2; i++) {
-      this.sites[i] = Status.BLOCKED;
+      this.doesSiteOpen[i] = false;
     }   
 
     this.weightedQuickUnionUF = new WeightedQuickUnionUF(this.length * this.length + 2);
@@ -63,7 +58,7 @@ public class Percolation {
     }
 
     int index = this.flattenIndex(row, col);
-    this.sites[index] = Status.OPEN;
+    this.doesSiteOpen[index] = true;
 
     if (row == 1) {
       this.weightedQuickUnionUF.union(this.virtualTopSiteId, index);
@@ -99,7 +94,7 @@ public class Percolation {
       throw new java.lang.IllegalArgumentException("out of boundary");
     }
     
-    return this.isSpecificState(row, col, Status.OPEN);
+    return this.doesSiteOpen[this.flattenIndex(row, col)];
   }
 
   public boolean isFull(int row, int col) {
@@ -107,13 +102,13 @@ public class Percolation {
       throw new java.lang.IllegalArgumentException("out of boundary");
     }
     int index = this.flattenIndex(row, col);
-    return this.sites[index] == Status.OPEN && this.weightedQuickUnionUF.find(index) == this.weightedQuickUnionUF.find(this.virtualTopSiteId);
+    return this.doesSiteOpen[index] && this.weightedQuickUnionUF.find(index) == this.weightedQuickUnionUF.find(this.virtualTopSiteId);
   }
 
   public int numberOfOpenSites() {
     int cnt = 0;
     for (int i = 0; i < this.length * this.length; i++) {
-      if (this.sites[i] == Status.OPEN) {
+      if (this.doesSiteOpen[i]) {
         cnt++;
       }
     }   
@@ -122,10 +117,6 @@ public class Percolation {
 
   public boolean percolates() {
     return this.weightedQuickUnionUF.find(this.virtualTopSiteId) == this.weightedQuickUnionUF.find(this.virtualBottomSiteId);
-  }
-
-  private boolean isSpecificState(int row, int col, Status state) {
-    return this.sites[this.flattenIndex(row, col)] == state;
   }
 
   private int flattenIndex(int row, int col) {
