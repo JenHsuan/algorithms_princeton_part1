@@ -1,7 +1,9 @@
 {
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-  "java.project.sourcePaths": ["src"],
+  "java.project.sourcePaths": [
+    "randomizedQueue/src"
+  ],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [
     "*/lib/**/*.jar"

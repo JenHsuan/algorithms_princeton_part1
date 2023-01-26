@@ -19,7 +19,7 @@ public class Percolation {
     this.doesSiteOpen = new boolean[this.length * this.length + 2];
 
     for (int i = 0; i < this.length * this.length + 2; i++) {
-      this.doesSiteOpen[i] = false;
+      doesSiteOpen[i] = false;
     }   
 
     this.weightedQuickUnionUF = new WeightedQuickUnionUF(this.length * this.length + 2);
