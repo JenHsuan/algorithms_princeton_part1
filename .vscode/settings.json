@@ -2,7 +2,8 @@
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "java.project.sourcePaths": [
-    "randomizedQueue/src"
+    "randomizedQueue/src",
+    "BruteCollinearPoints/src"
   ],
   "java.project.outputPath": "bin",
   "java.project.referencedLibraries": [

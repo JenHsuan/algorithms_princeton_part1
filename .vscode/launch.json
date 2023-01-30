@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch BruteCollinearPoints",
+      "request": "launch",
+      "mainClass": "BruteCollinearPoints",
+      "projectName": "algorithms_princeton_part1_5cce1ca"
+    },
+    {
+      "type": "java",
       "name": "Launch Current File",
       "request": "launch",
       "mainClass": "${file}"
