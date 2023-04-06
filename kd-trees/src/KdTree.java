@@ -1,6 +1,9 @@
 import java.util.Iterator;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.In;
 public class KdTree {
   private TwoDimensionTree set;
 
@@ -312,7 +315,7 @@ public class KdTree {
      // draw the points
      StdDraw.clear();
      StdDraw.setPenColor(StdDraw.BLACK);
-     StdDraw.setPenRadius(0.01);
+     StdDraw.setPenRadius(0.001);
      brute.draw();
      StdDraw.show();
 
@@ -341,7 +344,7 @@ public class KdTree {
          // draw the points
          StdDraw.clear();
          StdDraw.setPenColor(StdDraw.BLACK);
-         StdDraw.setPenRadius(0.01);
+         StdDraw.setPenRadius(0.001);
          brute.draw();
 
          // draw the rectangle
@@ -352,13 +355,13 @@ public class KdTree {
          rect.draw();
 
          // draw the range search results for brute-force data structure in red
-         StdDraw.setPenRadius(0.03);
+         StdDraw.setPenRadius(0.003);
          StdDraw.setPenColor(StdDraw.RED);
          for (Point2D p : brute.range(rect))
              p.draw();
 
          // draw the range search results for kd-tree in blue
-         StdDraw.setPenRadius(0.02);
+         StdDraw.setPenRadius(0.002);
          StdDraw.setPenColor(StdDraw.BLUE);
          for (Point2D p : kdtree.range(rect))
              p.draw();
